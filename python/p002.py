@@ -8,7 +8,7 @@ def fibonacci():
     b = 2
     sequence = [a, b]
 
-    while a + b  <= 4000000 :
+    while a + b  <= 4000000:
         sequence.append(a + b)
         a, b= b, a + b
 
