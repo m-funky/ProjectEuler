@@ -11,7 +11,7 @@ def compute():
     while count < 10001:
         num += 1
         is_prime = True
-        for i in range(2, num):
+        for i in range(2, math.ceil(math.sqrt(num))):
             if num % i == 0:
                 is_prime = False
                 break
