@@ -3,23 +3,28 @@ import time
 
 def compute():
 
-    count = 0
-    prime = 1
+    count = 1
+    prime = 2
     num = prime
     is_prime = True
 
     while count < 10001:
         num += 1
+
+        if num % 2 == 0:
+            continue
+
         is_prime = True
-        for i in range(2, math.ceil(math.sqrt(num))):
+
+        for i in range(2, int(math.sqrt(num)) + 1):
             if num % i == 0:
                 is_prime = False
                 break
-        else:
-            if is_prime:
-                prime = num
-                count += 1
-                print(str(count) + " : " + str(num))
+
+        if is_prime:
+            prime = num
+            count += 1
+            print(str(count) + " : " + str(num))
 
     return prime
 
