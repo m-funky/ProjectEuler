@@ -1,7 +1,6 @@
 import math
 
 def compute():
-    max_prime = 2
     num = 600851475143
 
     for i in range(2, num + 1):
