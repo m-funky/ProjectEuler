@@ -29,46 +29,33 @@ def grid():
 
     return [grid_list[x * 20:x * 20 + 20] for x in range(20)]
 
+GRID = grid()
+
+def compute_grid_product(x, y, dx, dy):
+    product = 1
+    for i in range(4):
+        product *= GRID[x + i * dx][y + i * dy]
+
+    return product
+
+
 def compute():
-    grids = grid()
-    max = 0
 
-    for x in range(20):
-        for y in range(20):
-            # left -> right
-            if x < 17:
-                product = grids[x][y] * grids[x + 1][y] * grids[x + 2][y] * grids[x + 3][y]
-
-                if product > max:
-                    print(x, y, product)
-                    max = product
-
-            # up -> down
-            if y < 17:
-                product = grids[x][y] * grids[x][y + 1] * grids[x][y + 2] * grids[x][y + 3]
-
-                if product > max:
-                    print(x, y, product)
-                    max = product
-
-            # left up -> right down
-            if x < 17 and y < 17:
-                product = grids[x][y] * grids[x + 1][y + 1] * grids[x + 2][y + 2] * grids[x + 3][y + 3]
-
-                if product > max:
-                    print(x, y, product)
-                    max = product
-
-            # right up -> left down
-            if 2 < x and y < 17:
-                product = grids[x][y] * grids[x - 1][y + 1] * grids[x - 2][y + 2] * grids[x - 3][y + 3]
-
-                if product > max:
-                    print(x, y, product)
-                    max = product
+# left -> right
+    max_lr = max([compute_grid_product(x, y, 1, 0) for x in range(20) for y in range(20) if x < 17])
 
 
-    return max
+# up -> down
+    max_ud = max([compute_grid_product(x, y, 0, 1) for x in range(20) for y in range(20) if y < 17])
+
+# left up -> right down
+    max_lurd = max([compute_grid_product(x, y, 1, 1) for x in range(20) for y in range(20) if x < 17 and y < 17])
+
+# right up -> left down
+    max_ruld = max([compute_grid_product(x, y, -1, 1) for x in range(20) for y in range(20) if 2 < x and y < 17])
+
+
+    return max(max_lr, max_ud, max_lurd, max_ruld)
 
 
 
