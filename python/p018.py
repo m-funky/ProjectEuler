@@ -22,6 +22,7 @@ TRIANGLE_STR = "\
 
 TRIANGLES = [list(map(int, x.split())) for x in TRIANGLE_STR.split("\n")]
 
+root_max = {} # {x: {y: root_max}}
 
 def compute():
     max = 0
@@ -38,14 +39,32 @@ def compute():
 
 # x is num of each line, y is num _of line,(left 0, up 0)
 def get_root_max(x, y):
-    if x == 0 and y == 0:
-        return TRIANGLES[y][x]
-    if x == 0:
-        return get_root_max(0, y - 1) + TRIANGLES[y][x]
-    if x == len(TRIANGLES[y]) - 1:
-        return get_root_max(x - 1, y - 1) + TRIANGLES[y][x]
+    if get_max(x, y) != None:
+        return get_max(x, y)
 
-    return max(get_root_max(x - 1, y -1), get_root_max(x, y -1)) + TRIANGLES[y][x]
+    if x == 0 and y == 0:
+        return set_max(x ,y, TRIANGLES[y][x])
+    if x == 0:
+        return set_max(x, y, get_root_max(0, y - 1) + TRIANGLES[y][x])
+    if x == len(TRIANGLES[y]) - 1:
+        return set_max(x, y, get_root_max(x - 1, y - 1) + TRIANGLES[y][x])
+
+    return set_max(x, y, max(get_root_max(x - 1, y -1), get_root_max(x, y -1)) + TRIANGLES[y][x])
+
+def set_max(x, y, max):
+    if root_max.get(x) == None:
+        root_max[x] = {}
+    if root_max[x].get(y) == None:
+        root_max[x][y] = max
+
+    return max
+
+def get_max(x, y):
+    if root_max.get(x) == None:
+        return None
+
+    return  root_max[x].get(y)
+
 
 
 if __name__ == "__main__":
