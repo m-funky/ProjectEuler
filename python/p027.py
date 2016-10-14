@@ -13,9 +13,9 @@ def compute():
 
     max_a = 0
     max_b = 0
-    max_l  = 0
+    max_n  = 0
     for b in b_primes:
-        for a in range(1 - b, 1001):
+        for a in range(1 - b, 1000):
             n = 0
             list = []
             while True:
@@ -34,16 +34,16 @@ def compute():
 
 
             print(a, b, n, list)
-            ml = max(list)
 
-            if ml >  max_l:
+            if n >  max_n:
                 max_a = a
                 max_b = b
-                max_l = ml
+                max_n = n
 
 
 
 
+    print("max : ", max_a, max_b, max_n)
     return max_a * max_b
 
 def primes(n):
