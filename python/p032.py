@@ -16,7 +16,7 @@ def compute():
                 continue
 
             digits = set(list(str(n) + str(m) + str(n * m)))
-            
+
             if len(digits) != 9 or ("0" in digits):
                 continue
 
@@ -35,7 +35,7 @@ def compute():
                 continue
 
             digits = set(list(str(n) + str(m) + str(n * m)))
-            
+
             if len(digits) != 9 or ("0" in digits):
                 continue
 
