@@ -3,7 +3,7 @@ import time
 
 # if n < 7, 10 ** n - 1 < 9! * n
 # but 7 <= n, 10 ** n - 1 > 9! * n
-# so finb until 2540160 = 9! * 7
+# so finb until 7-digits
 
 FACTORIALS = [ math.factorial(x) for x in range(0, 10)]
 MAX = FACTORIALS[9] * 7
@@ -13,10 +13,9 @@ def compute():
     total = 0
 
     for i in range(3, MAX):
-        print(i)
         sum_of_factorial = sum([ FACTORIALS[int(n)] for n in list(str(i))])
         if i == sum_of_factorial:
-            print('ANS', i)
+            print(i)
             total += i
 
 
