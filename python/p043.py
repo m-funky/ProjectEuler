@@ -7,8 +7,8 @@ import time
 # d6 = 0, 5, but if d6 = 0, d7d8 % 11 = 0, so d7 = d8
 # d6 = 5
 # d1d2d3d4d5 is upper, d7d8d9 is lower
-# d3d4d5 % 3, so upper starts 012348, step is 3
-# d8d9d10 % 17, so lower starts 0136, step is 17
+# d3d4d5 % 3, so upper starts 01234
+# d8d9d10 % 17, so lower starts 0136
 
 def compute():
 
@@ -16,8 +16,7 @@ def compute():
 
     total = 0
 
-    # d3d4d5 % 3 == 0
-    for upper_i in range(1236, 98764 + 1, 3):
+    for upper_i in range(1234, 98764 + 1):
         if upper_i < 10000:
             upper_list = ["0"] + list(str(upper_i))
         else:
@@ -30,10 +29,12 @@ def compute():
         if len(set(upper_list)) != 5:
             continue
 
-        lower_sets = num_sets - set(upper_list)
+        if int(upper_list[2] + upper_list[3] + upper_list[4]) % 3 != 0:
+            continue
 
-        # d7d8d9 % 17 == 0
-        for lower_i in range(136, 9876 + 1, 17):
+        lower_sets = num_sets - set(upper_list) - set("5")
+
+        for lower_i in range(136, 9876 + 1):
             if lower_i < 1000:
                 lower_list = ["0"] + list(str(lower_i))
             else:
@@ -48,13 +49,16 @@ def compute():
 
             if int(lower_list[0] + lower_list[1] + lower_list[2]) % 13 != 0:
                 continue
-            print(lower_i)
 
-            #if set(lower_list) != lower_sets:
-            #    continue
+            if int(lower_list[1] + lower_list[2] + lower_list[3]) % 17 != 0:
+                continue
 
-            print(upper_i, 5, lower_i)
-            num = int("".join(upper_i) + "5" + "".join(lower_i))
+            print(upper_i, lower_i, lower_sets, set(lower_list))
+            if set(lower_list) != lower_sets:
+                continue
+
+            num = int("".join(upper_list) + "5" + "".join(lower_list))
+            print(upper_i, 5, lower_i, num)
 
             total += num
 
