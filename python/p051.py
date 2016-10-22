@@ -24,6 +24,7 @@ def compute():
 
 def compute_by_digit(digit):
 
+
     for i in range(2, 2 ** digit - 1):
         diff_mask = bin(i)[2:]
         diff = int(diff_mask)
@@ -31,11 +32,23 @@ def compute_by_digit(digit):
         if list(diff_mask).count("1") % 3 != 0:
             continue
 
+        # if one number digit is changed, numbers include 5 even.
+        if list(diff_mask)[-1] == "1":
+            continue
+
 
         for n in range(10 ** (digit - 1), 10 ** digit):
             mask_n = int(mask_num(diff_mask, n, digit))
 
             if mask_n % 3 == 0:
+                continue
+
+            # one number digit is even
+            if mask_n % 2 == 0:
+                continue
+
+            # one number digit is 0 or 5
+            if mask_n % 5 == 0:
                 continue
 
             if searched(mask_n, diff):
