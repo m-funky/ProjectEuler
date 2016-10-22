@@ -3,9 +3,9 @@ import time
 
 def compute():
 
-    t_list = []
-    p_list = []
-    h_list = []
+    t_list = set()
+    p_list = set()
+    h_list = set()
 
     n = 0
     count = 0
@@ -19,13 +19,13 @@ def compute():
         h = n * (2 * n - 1)
 
         if t in p_list and t in h_list:
-            print(t, n, p_list.index(t) + 1, h_list.index(t) + 1)
+            print(t, n)
             count += 1
             last_t = t
 
-        t_list.append(t)
-        p_list.append(p)
-        h_list.append(h)
+        t_list.add(t)
+        p_list.add(p)
+        h_list.add(h)
 
     return last_t
 
