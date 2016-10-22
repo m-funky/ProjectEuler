@@ -5,6 +5,7 @@ import time
 def compute():
 
     num_list = []
+    num_set = set()
 
     d = 0
     n = 0
@@ -19,15 +20,16 @@ def compute():
                 return d
             if diff >= num:
                 break
-            if diff in num_list:
+            if diff in num_set:
 
-                if abs(num - diff) in num_list:
+                if abs(num - diff) in num_set:
                     print(num, diff, num + diff, abs(num - diff))
                     d = abs(num - diff)
 
 
 
         num_list.append(current_num)
+        num_set.add(current_num)
 
 
 
