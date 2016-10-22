@@ -5,8 +5,6 @@ import time
 def compute():
 
     num_list = []
-    num_diff = {}
-    num_sum = {}
 
     d = 0
     n = 0
