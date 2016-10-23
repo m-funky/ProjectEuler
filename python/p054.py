@@ -53,39 +53,39 @@ def hand(cards):
 
     # return (hand, [hiest_value, .., lowest_value])
     values = loyal_straight_flush(cards)
-    if values != None:
+    if values:
         return (LOYAL_STRAIGHT_FLUSH, values)
 
     values = straight_flush(cards)
-    if values != None:
+    if values:
         return (STRAIGHT_FLUSH, values)
 
     values = four_card(cards)
-    if values != None:
+    if values:
         return (FOUR_CARD, values)
 
     values = full_house(cards)
-    if values != None:
+    if values:
         return (FULL_HOUSE, values)
 
     values = flush(cards)
-    if values != None:
+    if values:
         return (FLUSH, values)
 
     values = straight(cards)
-    if values != None:
+    if values:
         return (STRAIGHT, values)
 
     values = three_card(cards)
-    if values != None:
+    if values:
         return (THREE_CARD, values)
 
     values = two_pairs(cards)
-    if values != None:
+    if values:
         return (TWO_PAIRS, values)
 
     values = one_pair(cards)
-    if values != None:
+    if values:
         return (ONE_PAIR, values)
 
     return (HIGH_CARD, high_card(cards))
@@ -95,17 +95,17 @@ def loyal_straight_flush(cards):
     if set(nums) == {10, 11, 12, 13, 14} and len(set(suits)) == 1:
         return [14, 13, 12, 11, 10]
     else:
-        return None
+        return []
 
 def straight_flush(cards):
     nums, suits = nums_and_suits(cards)
     nums.sort()
     if len(set(nums)) != 5:
-        return None
+        return []
     if nums[-1] - nums[0] == 4 and len(set(suits)) == 1:
         return nums[::-1]
     else:
-        return None
+        return []
 
 def four_card(cards):
     nums, suits = nums_and_suits(cards)
@@ -115,7 +115,7 @@ def four_card(cards):
     elif nums.count(nums[-1]) == 4:
         return [nums[-1], nums[0]]
     else:
-        return None
+        return []
 
 def full_house(cards):
     nums, suits = nums_and_suits(cards)
@@ -125,7 +125,7 @@ def full_house(cards):
     elif (nums.count(nums[0]) == 2 and nums.count(nums[-1]) == 3):
         return [nums[-1], nums[0]]
     else:
-        return None
+        return []
 
 def flush(cards):
     nums, suits = nums_and_suits(cards)
@@ -133,17 +133,17 @@ def flush(cards):
         nums.sort()
         return nums[::-1]
     else:
-        return None
+        return []
 
 def straight(cards):
     nums, suits = nums_and_suits(cards)
     nums.sort()
     if len(set(nums)) != 5:
-        return None
+        return []
     if nums[-1] - nums[0] == 4:
         return nums[::-1]
     else:
-        return None
+        return []
 
 def three_card(cards):
     nums, suits = nums_and_suits(cards)
@@ -155,7 +155,7 @@ def three_card(cards):
     elif (nums.count(nums[2]) == 3):
         return [nums[2], nums[1], nums[0]]
     else:
-        return None
+        return []
 
 def two_pairs(cards):
     nums, suits = nums_and_suits(cards)
@@ -167,7 +167,7 @@ def two_pairs(cards):
     elif (nums.count(nums[1]) == 2 and nums.count(nums[3]) == 2):
         return [nums[3], nums[1], nums[0]]
     else:
-        return None
+        return []
 
 def one_pair(cards):
     nums, suits = nums_and_suits(cards)
@@ -181,7 +181,7 @@ def one_pair(cards):
     elif (nums.count(nums[3]) == 2):
         return [nums[3], nums[4], nums[2], nums[1], nums[0]]
     else:
-        return None
+        return []
 
 def high_card(cards):
     nums, suits = nums_and_suits(cards)
