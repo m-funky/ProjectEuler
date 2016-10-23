@@ -8,7 +8,14 @@ not_prime_set = {0, 1}
 prime_pair_set = set()
 not_prime_pair_set = set()
 
-not_prime_group_set = set()
+prime_three_set = set()
+not_prime_three_set = set()
+
+prime_four_set = set()
+not_prime_four_set = set()
+
+prime_five_set = set()
+not_prime_five_set = set()
 
 def compute():
 
@@ -18,62 +25,108 @@ def compute():
         n += 1
         if not is_prime(n):
             continue
-        print(n)
+        print('prime', n)
 
 
-        group = prime_group(n, primes, 4)
+        group = prime_group(n, primes)
 
         if n != 2 and n != 5:
             primes.append(n)
 
         if group:
-            print(group)
-            return sum(group)
+            print(group[0])
+            return sum(list(group[0]))
+
 
     return 0
 
-def prime_group(new_prime, primes, num):
+def prime_group(new_prime, primes):
 
-    for group in itertools.combinations(primes, num - 1):
+    set_pair_primes(new_prime, primes)
 
-        if group in not_prime_group_set:
+    set_three_group_primes(new_prime)
+
+    set_four_group_primes(new_prime)
+
+    set_five_group_primes(new_prime)
+
+
+    return list(prime_five_set)
+
+def set_five_group_primes(new_prime):
+    for x, y, z, a in prime_four_set:
+        if a == new_prime:
+            continue
+        if not is_concat_prime_pair(x, new_prime):
+            not_prime_five_set.add((x, y, z, a, new_prime))
+            continue
+        if not is_concat_prime_pair(y, new_prime):
+            not_prime_five_set.add((x, y, z, a, new_prime))
+            continue
+        if not is_concat_prime_pair(z, new_prime):
+            not_prime_five_set.add((x, y, z, a, new_prime))
+            continue
+        if not is_concat_prime_pair(a, new_prime):
+            not_prime_five_set.add((x, y, z, a, new_prime))
             continue
 
-        list_group = list(group)
-        list_group.append(new_prime)
+        prime_five_set.add((x, y, z, a, new_prime))
+
+def set_four_group_primes(new_prime):
+    for x, y, z in prime_three_set:
+        if z == new_prime:
+            continue
+        if not is_concat_prime_pair(x, new_prime):
+            not_prime_four_set.add((x, y, z, new_prime))
+            continue
+        if not is_concat_prime_pair(y, new_prime):
+            not_prime_four_set.add((x, y, z, new_prime))
+            continue
+        if not is_concat_prime_pair(z, new_prime):
+            not_prime_four_set.add((x, y, z, new_prime))
+            continue
+
+        prime_four_set.add((x, y, z, new_prime))
+
+def set_three_group_primes(new_prime):
+    for x, y in prime_pair_set:
+        if y == new_prime:
+            continue
+        if not is_concat_prime_pair(x, new_prime):
+            not_prime_three_set.add((x, y, new_prime))
+            continue
+        if not is_concat_prime_pair(y, new_prime):
+            not_prime_three_set.add((x, y, new_prime))
+            continue
+
+        prime_three_set.add((x, y, new_prime))
 
 
-        for n, m in itertools.combinations(list_group, 2):
-            if not is_concat_prime_pair(n, m):
-                if m != new_prime:
-                    not_prime_group_set.add(group)
-                break
+
+
+def set_pair_primes(new_prime, primes):
+    # prime < new_prime
+    for prime in primes:
+        if is_concat_prime_pair(prime, new_prime):
+            prime_pair_set.add((prime, new_prime))
         else:
-            return list_group
-
-    return []
+            not_prime_pair_set.add((prime, new_prime))
 
 
 def is_concat_prime_pair(n, m):
 
-    n_m = (n, m) if n < m else (m, n)
-
-    if n_m in not_prime_pair_set:
+    if (n, m) in not_prime_pair_set:
         return False
 
-    if n_m in prime_pair_set:
+    if (n, m) in prime_pair_set:
         return True
 
     a = int(str(n) + str(m))
     if not is_prime(a):
-        not_prime_pair_set.add(n_m)
         return False
     b = int(str(m) + str(n))
     if not is_prime(b):
-        not_prime_pair_set.add(n_m)
         return False
-
-    prime_pair_set.add(n_m)
 
     return True
 
