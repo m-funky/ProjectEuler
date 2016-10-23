@@ -4,149 +4,83 @@ import time
 def compute():
 
 
-    triangles = []
-    squares = []
-    pentagonals = []
-    hexagonals = []
-    heptagonals = []
-    octagonals = []
+    nums = {3: set(), 4: set(), 5: set(), 6: set(), 7: set(), 8: set()}
 
-    triangles_start = 0
-    squares_start = 0
-    pentagonals_start = 0
-    hexagonals_start = 0
-    heptagonals_start = 0
-    octagonals_start = 0
 
     n = 0
     while True:
         n += 1
-        triangle = n * (n + 1) // 2
-        square = n ** 2
-        pentagonal = n * (3 * n - 1) // 2
-        hexagonal = n * (2 * n - 1)
-        heptagonal = n * (5 * n - 3) // 2
-        octagonal = n * (3 * n - 2)
+        num = {}
+        num[3] = n * (n + 1) // 2
+        num[4] = n ** 2
+        num[5] = n * (3 * n - 1) // 2
+        num[6] = n * (2 * n - 1)
+        num[7] = n * (5 * n - 3) // 2
+        num[8] = n * (3 * n - 2)
 
-        if not triangle < 10000:
+        if not num[3] < 10000:
             break
-        if triangles_start == 0 and 1000 <= triangle:
-            triangles_start = n
-        if squares_start == 0 and 1000 <= square:
-            squares_start = n
-        if pentagonals_start == 0 and 1000 <= pentagonal:
-            pentagonals_start = n
-        if hexagonals_start == 0 and 1000 <= hexagonal:
-            hexagonals_start = n
-        if heptagonals_start == 0 and 1000 <= heptagonal:
-            heptagonals_start = n
-        if octagonals_start == 0 and 1000 <= octagonal:
-            octagonals_start = n
 
-        if triangle < 10000:
-            triangles.append(triangle)
-        if square < 10000:
-            squares.append(square)
-        if pentagonal < 10000:
-            pentagonals.append(pentagonal)
-        if hexagonal < 10000:
-            hexagonals.append(hexagonal)
-        if heptagonal < 10000:
-            heptagonals.append(heptagonal)
-        if octagonal < 10000:
-            octagonals.append(octagonal)
+        for i in range(3, 9):
+            if 1000 <= num[i] < 10000:
+                first = int(str(num[i])[0:2])
+                last = int(str(num[i])[2:])
+                if 10 <= last:
+                    nums[i].add((n, first, last))
+                    
 
+    i_list = [0, 0, 0, 0, 0, 0]
+    num_list = [0, 0, 0, 0, 0, 0]
+    for a in nums[3]:
+        i_list[0] = a[0]
+        num_list[0] = a[1:]
 
-    for a_i, a in enumerate(triangles[triangles_start - 1:]):
-        i_set = set()
-        first_a = int(str(a)[0:2])
-        last_a = int(str(a)[2:])
-        a_full_i = a_i + triangles_start
-        i_set.add(a_full_i)
-
-        for b_i, b in enumerate(squares[squares_start - 1:]):
-            if (last_a + 1) * 100 < b:
-                break
-            if b < last_a * 100:
+        for b in nums[4]:
+            if b[0] in i_list:
                 continue
+            i_list[1] = b[0]
+            num_list[1] = b[1:]
 
-            first_b = int(str(b)[0:2])
-            b_full_i = b_i + squares_start
-            if last_a != first_b or  b_full_i in i_set:
-                continue
-
-            i_set.add(b_full_i)
-
-            last_b = int(str(b)[2:])
-
-            for c_i, c in enumerate(pentagonals[pentagonals_start - 1:]):
-                if (last_b + 1) * 100 < c:
-                    break
-                if c < last_b * 100:
+            for c in nums[5]:
+                if c[0] in i_list:
                     continue
+                i_list[2] = c[0]
+                num_list[2] = c[1:]
 
-                first_c = int(str(c)[0:2])
-                c_full_i = c_i + pentagonals_start
-                if last_b != first_c or  c_full_i in i_set:
-                    continue
-
-                i_set.add(c_full_i)
-
-                last_c = int(str(c)[2:])
-
-                for d_i, d in enumerate(hexagonals[hexagonals_start - 1:]):
-                    if (last_c + 1) * 100 < d:
-                        break
-                    if d < last_c * 100:
+                for d in nums[6]:
+                    if d[0] in i_list:
                         continue
+                    i_list[3] = d[0]
+                    num_list[3] = d[1:]
 
-                    first_d = int(str(d)[0:2])
-                    d_full_i = d_i + hexagonals_start
-                    if last_c != first_d or d_full_i in i_set:
-                        continue
-
-                    i_set.add(d_full_i)
-
-                    last_d = int(str(d)[2:])
-
-                    for e_i, e in enumerate(heptagonals[heptagonals_start - 1:]):
-                        if (last_d + 1) * 100 < e:
-                            break
-                        if e < last_d * 100:
+                    for e in nums[7]:
+                        if e[0] in i_list:
                             continue
+                        i_list[4] = e[0]
+                        num_list[4] = e[1:]
 
-                        first_e = int(str(e)[0:2])
-                        e_full_i = e_i + heptagonals_start
-                        if last_d != first_e or e_full_i in i_set:
-                            continue
-
-                        i_set.add(e_full_i)
-
-                        last_e = int(str(e)[2:])
-
-                        for f_i, f in enumerate(octagonals[octagonals_start - 1:]):
-                            if (last_e + 1) * 100 < f:
-                                break
-                            if f < last_e * 100:
+                        for f in nums[8]:
+                            if f[0] in i_list:
                                 continue
+                            i_list[5] = f[0]
+                            num_list[5] = f[1:]
 
-                            first_f = int(str(f)[0:2])
-                            f_full_i = f_i + octagonals_start
-                            if last_e != first_f or f_full_i in i_set:
-                                continue
-
-                            i_set.add(f_full_i)
-
-                            last_f = int(str(f)[2:])
-
-                            print(a, b, c, d, e, f)
-                            if last_f == first_a:
-
-                                return sum([a, b, c, d, e, f])
-
-    
+                            if is_cyclical(num_list):
+                                print(num_list)
+                                return sum([x * 100 + y for x, y in num_list])
 
     return 0
+
+def is_cyclical(target_num_set):
+    print(target_num_set)
+    return False
+    num_list= list(target_num_set)
+    firsts = [x for x, y in num_list]
+    lasts = [x for x, y in num_list]
+    for i, x_y in enumerate(num_list):
+        first, last = x_y
+        firsts
+
 
 
 
