@@ -9,20 +9,17 @@ prime_pair_set = set()
 not_prime_pair_set = set()
 
 prime_three_set = set()
-not_prime_three_set = set()
 
 prime_four_set = set()
-not_prime_four_set = set()
 
 prime_five_set = set()
-not_prime_five_set = set()
 
 def compute():
 
-    n = 1
-    primes = []
+    n = 5
+    primes = [3]
     while True:
-        n += 1
+        n += 2
         if not is_prime(n):
             continue
         print('prime', n)
@@ -30,8 +27,7 @@ def compute():
 
         group = prime_group(n, primes)
 
-        if n != 2 and n != 5:
-            primes.append(n)
+        primes.append(n)
 
         if group:
             print(group[0])
@@ -58,32 +54,26 @@ def set_five_group_primes(new_prime):
         if a == new_prime:
             continue
         if not is_concat_prime_pair(x, new_prime):
-            not_prime_five_set.add((x, y, z, a, new_prime))
             continue
         if not is_concat_prime_pair(y, new_prime):
-            not_prime_five_set.add((x, y, z, a, new_prime))
             continue
         if not is_concat_prime_pair(z, new_prime):
-            not_prime_five_set.add((x, y, z, a, new_prime))
             continue
         if not is_concat_prime_pair(a, new_prime):
-            not_prime_five_set.add((x, y, z, a, new_prime))
             continue
 
         prime_five_set.add((x, y, z, a, new_prime))
+        break
 
 def set_four_group_primes(new_prime):
     for x, y, z in prime_three_set:
         if z == new_prime:
             continue
         if not is_concat_prime_pair(x, new_prime):
-            not_prime_four_set.add((x, y, z, new_prime))
             continue
         if not is_concat_prime_pair(y, new_prime):
-            not_prime_four_set.add((x, y, z, new_prime))
             continue
         if not is_concat_prime_pair(z, new_prime):
-            not_prime_four_set.add((x, y, z, new_prime))
             continue
 
         prime_four_set.add((x, y, z, new_prime))
@@ -93,10 +83,8 @@ def set_three_group_primes(new_prime):
         if y == new_prime:
             continue
         if not is_concat_prime_pair(x, new_prime):
-            not_prime_three_set.add((x, y, new_prime))
             continue
         if not is_concat_prime_pair(y, new_prime):
-            not_prime_three_set.add((x, y, new_prime))
             continue
 
         prime_three_set.add((x, y, new_prime))
