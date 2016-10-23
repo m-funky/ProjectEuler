@@ -5,8 +5,6 @@ import time
 prime_set = {2}
 not_prime_set = {0, 1}
 
-searched_n_and_diff = {}
-
 
 # 8 primes made by only (3 * n)-digits replaced numbers
 # so starting to search at 4-digits
@@ -15,9 +13,10 @@ def compute():
 
 
     digit = 3
-    while digit < 6:
+    while True:
         digit += 1
-        compute_by_digit(digit)
+        if compute_by_digit(digit):
+            break
 
 
     return 0
@@ -25,6 +24,7 @@ def compute():
 def compute_by_digit(digit):
 
 
+    min_n = 10 ** digit
     for i in range(2, 2 ** digit - 1):
         diff_mask = bin(i)[2:]
         diff = int(diff_mask)
@@ -37,21 +37,22 @@ def compute_by_digit(digit):
             continue
 
 
-        for n in range(10 ** (digit - 1), 10 ** digit):
+        # for avoiding one number digit is even
+        for n in range(10 ** (digit - 1) + 1, 10 ** digit, 2):
+            if min_n < n:
+                print(min_n)
+                return True
+
+            if not is_prime(n):
+                continue
+
             mask_n = int(mask_num(diff_mask, n, digit))
 
             if mask_n % 3 == 0:
                 continue
 
-            # one number digit is even
-            if mask_n % 2 == 0:
-                continue
-
             # one number digit is 0 or 5
             if mask_n % 5 == 0:
-                continue
-
-            if searched(mask_n, diff):
                 continue
 
 
@@ -66,21 +67,11 @@ def compute_by_digit(digit):
 
             if len(n_list) >= 8:
                 print(digit, n, mask_n, diff, n_list)
+                if n_list[0] < min_n:
+                    min_n = n_list[0]
 
 
-def searched(n, diff):
-    if searched_n_and_diff.get(n) is None:
-        searched_n_and_diff[n] = {diff}
-        return False
-    else:
-        if diff not in searched_n_and_diff[n]:
-            searched_n_and_diff[n].add(diff)
-            return False
-        else:
-            return True
-
-
-
+    return False
 
 
 
