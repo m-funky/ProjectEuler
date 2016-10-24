@@ -26,75 +26,29 @@ def compute():
                 if 10 <= last:
                     nums[i].add((i, n, first, last))
 
-    i_list = [0, 0, 0, 0, 0, 0]
-    n_list = [0, 0, 0, 0, 0, 0]
-    for a in nums[3]:
-        i_list[0] = a[0] # 3
-        n_list[0] = a[1]
+    for x in nums[3]:
+        result = cyclical_group([x], [x[0]], [x[1]])
+        if result:
+            return sum([100 * a + b for i, n, a, b in result ])
 
-        for b in other_nums_list(i_list):
-            if b[1] in n_list:
-                continue
-            if a[3] != b[2]:
-                continue
-            i_list[1] = b[0]
-            n_list[1] = b[1]
-
-            for c in other_nums_list(i_list):
-                if c[1] in n_list:
-                    continue
-                if b[3] != c[2]:
-                    continue
-                i_list[2] = c[0]
-                n_list[2] = c[1]
-
-                for d in other_nums_list(i_list):
-                    if d[1] in n_list:
-                        continue
-                    if c[3] != d[2]:
-                        continue
-                    i_list[3] = d[0]
-                    n_list[3] = d[1]
-
-                    for e in other_nums_list(i_list):
-                        if e[1] in n_list:
-                            continue
-                        if d[3] != e[2]:
-                            continue
-                        i_list[4] = e[0]
-                        n_list[4] = e[1]
-
-                        for f in other_nums_list(i_list):
-                            if f[1] in n_list:
-                                continue
-                            if e[3] != f[2]:
-                                continue
-                            i_list[5] = f[0]
-                            n_list[5] = f[1]
-
-                            print(a, b, c, d, e, f)
-                            if f[3] == a[2]:
-
-                                group = [a, b, c, d, e, f]
-                                print(group)
-                                return sum([x * 100 + y for i, n, x, y in group])
-                        else:
-                            i_list[5] = 0
-                            n_list[5] = 0
-                    else:
-                        i_list[4] = 0
-                        n_list[4] = 0
-                else:
-                    i_list[3] = 0
-                    n_list[3] = 0
-            else:
-                i_list[2] = 0
-                n_list[2] = 0
-        else:
-            i_list[1] = 0
-            n_list[1] = 0
 
     return 0
+
+def cyclical_group(x_list, used_i_list, used_n_list):
+    if len(x_list) == 6:
+        print(x_list)
+        return x_list if x_list[0][2] == x_list[-1][3] else []
+
+    for x in other_nums_list(used_i_list):
+        if x[1] in used_n_list:
+            continue
+        if x_list[-1][3] != x[2]:
+            continue
+        result = cyclical_group(x_list + [x], used_i_list + [x[0]], used_n_list + [x[1]])
+        if result:
+            return result
+
+    return []
 
 def other_nums_list(exclude_indices):
     base_list = []
