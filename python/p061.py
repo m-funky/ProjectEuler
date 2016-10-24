@@ -1,11 +1,9 @@
 import math
 import time
 
+nums = {3: set(), 4: set(), 5: set(), 6: set(), 7: set(), 8: set()}
+
 def compute():
-
-
-    nums = {3: set(), 4: set(), 5: set(), 6: set(), 7: set(), 8: set()}
-
 
     n = 0
     while True:
@@ -23,63 +21,90 @@ def compute():
 
         for i in range(3, 9):
             if 1000 <= num[i] < 10000:
-                first = int(str(num[i])[0:2])
-                last = int(str(num[i])[2:])
+                first = num[i] // 100
+                last = num[i] % 100
                 if 10 <= last:
-                    nums[i].add((n, first, last))
-                    
+                    nums[i].add((i, n, first, last))
 
     i_list = [0, 0, 0, 0, 0, 0]
-    num_list = [0, 0, 0, 0, 0, 0]
+    n_list = [0, 0, 0, 0, 0, 0]
     for a in nums[3]:
-        i_list[0] = a[0]
-        num_list[0] = a[1:]
+        i_list[0] = a[0] # 3
+        n_list[0] = a[1]
 
-        for b in nums[4]:
-            if b[0] in i_list:
+        for b in other_nums_list(i_list):
+            if b[1] in n_list:
+                continue
+            if a[3] != b[2]:
                 continue
             i_list[1] = b[0]
-            num_list[1] = b[1:]
+            n_list[1] = b[1]
 
-            for c in nums[5]:
-                if c[0] in i_list:
+            for c in other_nums_list(i_list):
+                if c[1] in n_list:
+                    continue
+                if b[3] != c[2]:
                     continue
                 i_list[2] = c[0]
-                num_list[2] = c[1:]
+                n_list[2] = c[1]
 
-                for d in nums[6]:
-                    if d[0] in i_list:
+                for d in other_nums_list(i_list):
+                    if d[1] in n_list:
+                        continue
+                    if c[3] != d[2]:
                         continue
                     i_list[3] = d[0]
-                    num_list[3] = d[1:]
+                    n_list[3] = d[1]
 
-                    for e in nums[7]:
-                        if e[0] in i_list:
+                    for e in other_nums_list(i_list):
+                        if e[1] in n_list:
+                            continue
+                        if d[3] != e[2]:
                             continue
                         i_list[4] = e[0]
-                        num_list[4] = e[1:]
+                        n_list[4] = e[1]
 
-                        for f in nums[8]:
-                            if f[0] in i_list:
+                        for f in other_nums_list(i_list):
+                            if f[1] in n_list:
+                                continue
+                            if e[3] != f[2]:
                                 continue
                             i_list[5] = f[0]
-                            num_list[5] = f[1:]
+                            n_list[5] = f[1]
 
-                            if is_cyclical(num_list):
-                                print(num_list)
-                                return sum([x * 100 + y for x, y in num_list])
+                            print(a, b, c, d, e, f)
+                            if f[3] == a[2]:
+
+                                group = [a, b, c, d, e, f]
+                                print(group)
+                                return sum([x * 100 + y for i, n, x, y in group])
+                        else:
+                            i_list[5] = 0
+                            n_list[5] = 0
+                    else:
+                        i_list[4] = 0
+                        n_list[4] = 0
+                else:
+                    i_list[3] = 0
+                    n_list[3] = 0
+            else:
+                i_list[2] = 0
+                n_list[2] = 0
+        else:
+            i_list[1] = 0
+            n_list[1] = 0
 
     return 0
 
-def is_cyclical(target_num_set):
-    print(target_num_set)
-    return False
-    num_list= list(target_num_set)
-    firsts = [x for x, y in num_list]
-    lasts = [x for x, y in num_list]
-    for i, x_y in enumerate(num_list):
-        first, last = x_y
-        firsts
+def other_nums_list(exclude_indices):
+    base_list = []
+    for i in range(3, 9):
+        if i in exclude_indices:
+            continue
+
+        base_list += nums[i]
+
+    return base_list
 
 
 
