@@ -6,40 +6,28 @@ not_prime_set = {0, 1}
 
 def compute():
 
-    max_d = 0
-    max_x = 0
-    for d in range(2, 1000 + 1):
-        if (d ** 0.5).is_integer():
-            continue
+    d_list = [ d for d in range(2, 1000 + 1) if not (d ** 0.5).is_integer() ]
+    x = 0
+    while x < 10000:
+        x += 2
+        divs = divisors(x ** 2 - 1)
+        print(x, divs)
 
-        min_x = min_x_in_d(d)
 
-        if min_x > max_x:
-            max_d = d
-            max_x = min_x
-            print("max d", max_d, max_x)
+    return 0
 
-    return max_d
 
-def min_x_in_d(d):
-    if not is_prime(d):
-        print(d, "not have max x.")
-        return 0
-
-    base = 0
+def divisors(x):
+    target = x
+    div_list = []
     while True:
-        base += d
-        upper_x, lower_x = base + 1, base - 1
-
-        lower_y = ((lower_x ** 2 - 1) / d) ** 0.5
-        if lower_y.is_integer():
-            print(d, lower_x, int(lower_y))
-            return lower_x
-
-        upper_y = ((upper_x ** 2 - 1) / d) ** 0.5
-        if upper_y.is_integer():
-            print(d, upper_x, int(upper_y))
-            return upper_x
+        if target == 1:
+            return div_list
+        for i in range(2, target + 1):
+            if target % i == 0:
+                div_list.append(i)
+                target //= i
+                break
 
 
 def is_prime(n):
