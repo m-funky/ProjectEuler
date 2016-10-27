@@ -19,27 +19,28 @@ def compute():
             max_x = min_x
             print("max d", max_d, max_x)
 
-
-
-
-
-
     return max_d
 
 def min_x_in_d(d):
-    if is_prime(d):
-        print(d, 'is skip')
+    if not is_prime(d):
+        print(d, "not have max x.")
         return 0
-    x = math.floor((d + 1 ) ** 0.5)
+
+    base = 0
     while True:
-        x += 1
-        for y in range(x - 1, 0, -1):
-            print(x, y)
-            if x ** 2 == 1 + d * (y ** 2):
-                print(d, x, y)
-                return x
-            elif x ** 2 > 1 + d * (y ** 2):
-                break
+        base += d
+        upper_x, lower_x = base + 1, base - 1
+
+        lower_y = ((lower_x ** 2 - 1) / d) ** 0.5
+        if lower_y.is_integer():
+            print(d, lower_x, int(lower_y))
+            return lower_x
+
+        upper_y = ((upper_x ** 2 - 1) / d) ** 0.5
+        if upper_y.is_integer():
+            print(d, upper_x, int(upper_y))
+            return upper_x
+
 
 def is_prime(n):
 
