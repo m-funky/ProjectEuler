@@ -5,51 +5,42 @@ import itertools
 prime_set = {2}
 not_prime_set = {0, 1}
 
+square_list = [1]
+
 def compute():
 
-    d_list = [ d for d in range(2, 1000 + 1) if not (d ** 0.5).is_integer() ]
-    x = 0
+    d_set = set()
+
+    for d in range(1000, 1, -1):
+        if (d ** 0.5).is_integer():
+            square_list.append(d)
+        else:
+            d_set.add(d)
+
+    x = 1
     while True:
         x += 1
-        divs = divisors(x ** 2 - 1)
-        uniq_divs = set(divs)
-        d_required = []
-        d_optional = []
+        gcd = math.gcd(x + 1, x - 1)
 
-        for div in sorted(list(uniq_divs)):
+        d_max = (x ** 2 - 1) // gcd // gcd
 
-            div_count = divs.count(div)
-            if div_count % 2 != 0:
-                d_required.append(div)
-            for i in range(0, div_count // 2):
-                d_optional.append(div)
-
-
-        d_base = product_of_list(d_required)
-        if d_base > 1000:
+        d_max_list = d_list(d_max)
+        if len(d_max_list) == 0:
+            print(x, x ** 2 - 1, d_max_list, len(d_set))
             continue
+        for i in d_max_list:
+            d_set.discard(i)
 
-        for i in range(0, len(d_optional) + 1):
-            for d_tapple in itertools.combinations(d_optional, i):
-                d_product = product_of_list(list(d_tapple))
-                if d_base * d_product > 1000:
-                    continue
-                try:
-                    d_list.remove(d_base * d_product)
-                except ValueError:
-                    None
+        print(x, x ** 2 - 1, d_max_list, len(d_set))
 
-
-
-        print(x ** 2 - 1, divs, d_required, d_optional, d_base, len(d_list))
-
-        if len(d_list) == 1:
-            return d_list
+        if len(d_set) == 1:
+            return d_set
 
 
 
     return 0
 
+def d_list(d_max):
 
 def divisors(x):
     target = x
