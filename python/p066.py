@@ -1,87 +1,95 @@
 import math
 import time
-import itertools
 
-prime_set = {2}
-not_prime_set = {0, 1}
+# Use Pell's equation
 
-square_list = [1]
+
+MAX_D = 1000
+
+a_dect = {}
+b_dect = {}
 
 def compute():
 
-    d_set = set()
+    d = 1
+    max_x = 0
+    max_d = 0
 
-    for d in range(1000, 1, -1):
+    while d < MAX_D:
+        d += 1
         if (d ** 0.5).is_integer():
-            square_list.append(d)
-        else:
-            d_set.add(d)
-
-    x = 1
-    while True:
-        x += 1
-        gcd = math.gcd(x + 1, x - 1)
-
-        d_max = (x ** 2 - 1) // gcd // gcd
-
-        d_max_list = d_list(d_max)
-        if len(d_max_list) == 0:
-            print(x, x ** 2 - 1, d_max_list, len(d_set))
             continue
-        for i in d_max_list:
-            d_set.discard(i)
+        x = compute_min_x(d)
+        if max_x < x:
+            max_x = x
+            max_d = d
 
-        print(x, x ** 2 - 1, d_max_list, len(d_set))
+    return (max_d, max_x)
 
-        if len(d_set) == 1:
-            return d_set
+def compute_min_x(d):
+
+    a_dect[d] = {}
+    b_dect[d] = {}
 
 
-
-    return 0
-
-def d_list(d_max):
-
-def divisors(x):
-    target = x
-    div_list = []
+    n = 0
     while True:
-        if target == 1:
-            return div_list
-        for i in range(2, math.ceil(math.sqrt(target)) + 1):
-            if target % i == 0:
-                div_list.append(i)
-                target //= i
-                break
-        else:
-            div_list.append(target)
-            return div_list
+        n += 1
+
+        x, y, m = get_b(n, d)
+
+        if m == 1:
+            a = get_a(n, d)
+            print(d, a[0], a[1])
+            return a[0]
 
 
-def product_of_list(n_list):
-    base = 1
-    for n in n_list:
-        base *= n
 
-    return base
+# a = (x, y) = x + y * (d ** 0.5)
+def get_a(n, d):
 
-def is_prime(n):
+    if a_dect[d].get(n) != None:
+        return a_dect[d][n]
 
-    if n in not_prime_set:
-        return False
+    if n == -1:
+        return (0, 1)
+    if n == 0:
+        return (1, 0)
 
-    if n in prime_set:
-        return True
+    prev_prev_a = get_a(n - 2, d)
+    prev_a = get_a(n - 1, d)
 
-    for i in range(2, math.ceil(math.sqrt(n)) + 1):
-        if n % i == 0:
-            not_prime_set.add(n)
+    b = get_b(n - 1, d)
+    k = int((b[0] + b[1] * (d ** 0.5)) / b[2])
 
-            return False
+    a = (prev_prev_a[0] + k * prev_a[0], prev_prev_a[1] + k * prev_a[1])
+    a_dect[d][n] = a
 
-    prime_set.add(n)
+    return a
 
-    return True
+# b = (x, y, m) = (x + y * (d ** 0.5)) / m
+def get_b(n, d):
+
+    if b_dect[d].get(n) != None:
+        return b_dect[d][n]
+
+    a = get_a(n, d)
+    prev_a = get_a(n - 1, d)
+
+    x = - (prev_a[0] * a[0] - d * prev_a[1] * a[1])
+    y = (a[0] * prev_a[1] - prev_a[0] * a[1])
+    m = (a[0] ** 2 - d * (a[1] ** 2))
+    xy_gcd = math.gcd(x, y)
+    m_gcd = math.gcd(xy_gcd, m)
+
+    b = (x // m_gcd, y // m_gcd, m // m_gcd)
+    b_dect[d][n] = b
+
+    return b
+
+
+
+
 
 if __name__ == "__main__":
     print("Start")
