@@ -4,9 +4,6 @@ import time
 MAX = 1000000
 
 def compute():
-    return 0
-
-def compute():
 
     min_fraction = (2, 7) # 2 / 7
     for n in range(3, MAX + 1):
