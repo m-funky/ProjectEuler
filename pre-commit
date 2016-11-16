@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+curl -X PURGE https://camo.githubusercontent.com/a61e31b247ca3c7c2bc467af6e2db1692cccaee1/68747470733a2f2f70726f6a65637465756c65722e6e65742f70726f66696c652f75686f75686f5f676f72696c6c612e706e67
