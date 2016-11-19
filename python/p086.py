@@ -2,27 +2,29 @@ import math
 import time
 
 # a <= b <= c <= m
+# a +  b <= 2 * c
+# 2 * a <= a+ b <= 2 * b
+
 TARGET = 1000000
 
 def compute():
 
 
-    a = 0
-    b = 0
     c = 0
     total = 0
 
     while total < TARGET:
         c += 1
-        for b in range(1, c + 1):
-            for a in range(1, b + 1):
+        for a_b in range(2, 2 * c + 1):
+            path_min = (a_b ** 2 + c ** 2) ** 0.5
 
-                path_min = ((a + b) ** 2 + c ** 2) ** 0.5
+            if not path_min.is_integer():
+                continue
 
-                if path_min.is_integer():
-                    total += 1
+            total += min(a_b, c + 1) - math.ceil(a_b / 2)
 
         print(c, total)
+
 
     return c
 
