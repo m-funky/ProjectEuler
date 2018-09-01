@@ -1,8 +1,8 @@
 import math
 import time
-from operator import mul
 
 K_MAX = 12000
+num_lists_dict = {}
 
 def compute():
 
@@ -20,7 +20,8 @@ def compute():
                 num = sum(num_list)
                 if num == product(num_list):
                     num_set.add(num)
-                    print(k, num, num_list)
+                    if k % 100 == 0:
+                        print(k, num, num_list)
                     has_num = True
                     break
 
@@ -35,9 +36,17 @@ def compute():
 
 # num_lists_from_sum(5, 8) = [[4, 1, 1, 1, 1], [3, 2, 1, 1, 1], [2, 2, 2, 1, 1]]
 def num_lists_from_sum(k, num_sum):
+    if num_lists_dict.get(k) and num_lists_dict[k].get(num_sum):
+        return num_lists_dict[k][num_sum]
 
     if k == 1:
-        return [[num_sum]]
+        value = [[num_sum]]
+        if num_lists_dict.get(k):
+            num_lists_dict[k][num_sum] = value
+        else:
+            num_lists_dict[k] = {num_sum: value}
+
+        return value
 
     num_lists = []
 
@@ -48,6 +57,11 @@ def num_lists_from_sum(k, num_sum):
                 break
 
             num_lists.append([x] + y_list)
+
+    if num_lists_dict.get(k):
+        num_lists_dict[k][num_sum] = num_lists
+    else:
+        num_lists_dict[k] = {num_sum: num_lists}
 
     return num_lists
 
