@@ -1,49 +1,57 @@
 import math
 import time
 
+# Use Heron's formula and Pell's equation
+
+# By Heron's formula
+# S = s * (s * (s - a) * (s - b) * (s - c)) ** (1 / 2), s = (a + b + c) / 2
+# if a = b, a and b is odd, c is even
+# a = b = 2 * n, c = 2 * n +- 1
+#
+# S = (n * (3 * n ** 2 +- 4 * n + 1) ** 1 / 2)
+# If S is integer, 3 * n ** 2 +- 4 * n + 1 is integer too.
+# 
+# 3 * n ** 2 +- 4 * n + 1 = k, k is integer
+# (3 * n +- 2) ** 2 - 3 * k ** 2 = 1
+# By Pell's equation 
+# X ** 2 - 3 * Y ** 2 = 1, X = 3 * n +- 2, Y = k
+#
+# min solutions (X, Y) is (2, 1), next (7, 4), (26, 15)
+# trianagle's perimeter is a + b + c = 6 * n +- 2
+# so
+# X = 7, n = 3 (X = 3 * n - 2), perimeter is 16 (6 * n - 2)
+# X = 26, n = 8 (X = 3 * n + 2), perimeter is 50 (6 * n + 2)
+
+L_MAX = 1000000000
+
 def compute():
 
     sum_l = 0
-    for x in range(2, 100):
+    x = 2
+    y = 1
+    while True:
 
-        l = length_of_traiangle_a(x)
+        prev_x = x
+        prev_y = y
 
-        if l != 0: 
-          print(x, x + 1, l)
-          sum_l += l
+        x = 2 * prev_x + 3 * prev_y
+        y = 2 * prev_y + prev_x
 
-        l = length_of_traiangle_b(x)
+        if x % 3 == 2:
+            n = (x - 2) / 3.0
+            l = 6 * n + 2
+        else:
+            n = (x + 2) / 3.0
+            l = 6 * n - 2
+        
 
-        if l != 0: 
-          print(x, x + 1, l)
-          sum_l += l
+        if l > L_MAX:
+            break
+
+        print(x, y, n, l)
+        sum_l += l
 
     return sum_l
-
-# x, x, x + 1
-def length_of_traiangle_a(x):
-
-    y = math.sqrt(x * x - (x + 1) * (x + 1)/ 4.0)
-
-    s = y * ( x + 1) / 2.0
-
-    if s.is_integer():
-        return 3 * x + 1
-    
-    return 0
-
-# x, x + 1, x + 1
-def length_of_traiangle_b(x):
-
-    y = math.sqrt((x + 1 ) * (x + 1) - x * x / 4.0)
-
-    s = y * x / 2.0
-
-    if s.is_integer():
-        return 3 * x + 2
-    
-    return 0
-
 
 
     
